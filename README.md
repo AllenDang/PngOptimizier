@@ -1,2 +1,4 @@
-# PngOptimizier
-Cross platform, tiny but ultra fast PNG optimizer
+# PNG Optimizer
+
+Cross platform, tiny, ultra fast, PNG optimizer
+

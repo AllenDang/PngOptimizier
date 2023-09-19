@@ -1,0 +1,33 @@
+[package]
+name = "png_optimizer"
+version = "0.1.0"
+edition = "2021"
+description = "PNG Optimizer"
+
+[package.metadata.bundle]
+name = "PngOptimizer"
+identifier = "com.allen.png_optimizer"
+icon = ["asset/icon.png"]
+version = "1.1.0"
+copyright = "Copyright (c) Allen Dang 2022. All rights reserved."
+category = "Developer Tool"
+short_description = "PNG Optimizer"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+strip = true
+lto = true
+opt-level = 3
+codegen-units = 1
+
+[dependencies]
+fltk = "1"
+fl2rust-macro = "0.5"
+fltk-theme = "0.7"
+tokio = { version = "1.32.0", features = ["full"] }
+oxipng = { version = "8.0", features = [
+  "parallel",
+  "zopfli",
+  "filetime",
+], default-features = false }
+float-pretty-print = "0.1.1"

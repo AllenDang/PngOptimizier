@@ -1,0 +1,33 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+class UserInterface {open
+} {
+  Function {make_window()} {open
+  } {
+    Fl_Window win {
+      label {PNG Optimizer} open
+      xywh {410 237 650 500} type Double visible
+    } {
+      Fl_Flex {} {open
+        xywh {0 0 650 500} margins {8 8 8 8} gap 8 set_size_tuples {2  0 30  2 30 }
+      } {
+        Fl_Box {} {
+          label {Drop png files to optimize}
+          xywh {8 8 634 30} align 20
+        }
+        Fl_Browser b_list {
+          xywh {8 46 634 408}
+        }
+        Fl_Flex {} {open
+          xywh {8 462 634 30} type HORIZONTAL
+        } {
+          Fl_Box lb_info {selected
+            xywh {8 462 634 30}
+          }
+        }
+      }
+    }
+  }
+}
