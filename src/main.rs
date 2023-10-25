@@ -108,13 +108,9 @@ async fn main() {
         if let Some(msg) = r.recv() {
             match msg {
                 Message::Start(pathes) => {
-                    for i in 0..ui.b_list.size() {
-                        if i == 1 {
-                            continue;
-                        }
+                    ui.b_list.clear();
 
-                        ui.b_list.remove(i);
-                    }
+                    ui.b_list.add("File|State|Original|Optimized|Percent");
 
                     for (i, p) in pathes.iter().enumerate() {
                         ui.b_list.add(&format_png_item(
