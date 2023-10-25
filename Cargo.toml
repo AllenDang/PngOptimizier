@@ -1,6 +1,6 @@
 [package]
 name = "png_optimizer"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
 description = "PNG Optimizer"
 
@@ -8,7 +8,7 @@ description = "PNG Optimizer"
 name = "PngOptimizer"
 identifier = "com.allen.png_optimizer"
 icon = ["asset/icon.png"]
-version = "1.0.0"
+version = "1.1.0"
 copyright = "Copyright (c) Allen Dang 2022. All rights reserved."
 category = "Developer Tool"
 short_description = "PNG Optimizer"

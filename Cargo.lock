@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "png_optimizer"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "embed-resource",
  "fl2rust-macro",
