@@ -25,7 +25,7 @@ fltk = "1"
 fl2rust-macro = "0.5"
 fltk-theme = "0.7"
 tokio = { version = "1.32.0", features = ["full"] }
-oxipng = { version = "8.0", features = [
+oxipng = { version = "9", features = [
   "parallel",
   "zopfli",
   "filetime",

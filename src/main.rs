@@ -258,14 +258,16 @@ fn get_file_size(path: &str) -> Result<usize, Box<dyn std::error::Error>> {
 fn optimize_png(path: &str) -> PngResult<()> {
     let opt = oxipng::Options {
         fix_errors: true,
-        preserve_attrs: true,
         ..Default::default()
     };
 
     let file_path = Path::new(path);
     oxipng::optimize(
         &InFile::Path(file_path.to_path_buf()),
-        &OutFile::Path(Some(file_path.to_path_buf())),
+        &OutFile::Path {
+            path: Some(file_path.to_path_buf()),
+            preserve_attrs: true,
+        },
         &opt,
     )
 }
