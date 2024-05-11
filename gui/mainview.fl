@@ -8,14 +8,38 @@ class UserInterface {open
   } {
     Fl_Window win {
       label {PNG Optimizer} open
-      xywh {410 237 650 500} type Double visible
+      xywh {447 278 650 500} type Double visible
     } {
       Fl_Flex {} {open
         xywh {0 0 650 500} margins {8 8 8 8} gap 8 set_size_tuples {2  0 30  2 30 }
       } {
-        Fl_Box {} {
-          label {Drop png files to optimize}
-          xywh {8 8 634 30} align 20
+        Fl_Flex {} {open
+          xywh {8 8 634 30} type HORIZONTAL set_size_tuples {5  1 40  2 40  3 40  4 40  5 40 }
+        } {
+          Fl_Box {} {
+            label {Drop png files to optimize}
+            xywh {8 8 434 30} align 20
+          }
+          Fl_Check_Button cb_nb {
+            label nb selected
+            tooltip {Do not change bit depth} xywh {442 8 40 30} down_box DOWN_BOX
+          }
+          Fl_Check_Button cb_nc {
+            label nc
+            tooltip {Do not change color type} xywh {482 8 40 30} down_box DOWN_BOX
+          }
+          Fl_Check_Button cb_np {
+            label np
+            tooltip {Do not change color palette} xywh {522 8 40 30} down_box DOWN_BOX
+          }
+          Fl_Check_Button cb_ng {
+            label ng
+            tooltip {Do not change to or from grayscale} xywh {562 8 40 30} down_box DOWN_BOX
+          }
+          Fl_Check_Button cb_nx {
+            label nx
+            tooltip {Do not perform any transformations and do not deinterlace by default} xywh {602 8 40 30} down_box DOWN_BOX
+          }
         }
         Fl_Browser b_list {
           xywh {8 46 634 408}
@@ -23,7 +47,7 @@ class UserInterface {open
         Fl_Flex {} {open
           xywh {8 462 634 30} type HORIZONTAL
         } {
-          Fl_Box lb_info {selected
+          Fl_Box lb_info {
             xywh {8 462 634 30}
           }
         }

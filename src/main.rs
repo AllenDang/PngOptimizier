@@ -21,7 +21,7 @@ struct PNGItem {
 
 #[derive(Clone)]
 enum Message {
-    Start(Vec<String>),
+    Start(Vec<String>, bool, bool, bool, bool, bool),
     Processing(PNGItem),
     UpdateProgress(i32, i32),
     Done(PNGItem),
@@ -80,7 +80,13 @@ async fn main() {
                         }
                     }
 
-                    sender.send(Message::Start(drop_in_pathes.clone()));
+                    let nb = ui.cb_nb.value();
+                    let nc = ui.cb_nc.value();
+                    let np = ui.cb_np.value();
+                    let ng = ui.cb_np.value();
+                    let nx = ui.cb_nx.value();
+
+                    sender.send(Message::Start(drop_in_pathes.clone(), nb, nc, np, ng, nx));
 
                     dnd = false;
                     released = false;
@@ -107,7 +113,7 @@ async fn main() {
     while app.wait() {
         if let Some(msg) = r.recv() {
             match msg {
-                Message::Start(pathes) => {
+                Message::Start(pathes, nb, nc, np, ng, nx) => {
                     ui.b_list.clear();
 
                     ui.b_list.add("File|State|Original|Optimized|Percent");
@@ -150,7 +156,7 @@ async fn main() {
 
                             sender.send(Message::Processing(item.clone()));
 
-                            if optimize_png(p).is_err() {
+                            if optimize_png(p, nb, nc, np, ng, nx).is_err() {
                                 sender.send(Message::Error(item));
                                 continue;
                             }
@@ -255,11 +261,31 @@ fn get_file_size(path: &str) -> Result<usize, Box<dyn std::error::Error>> {
     Ok(meta.len() as usize)
 }
 
-fn optimize_png(path: &str) -> PngResult<()> {
-    let opt = oxipng::Options {
+fn optimize_png(path: &str, nb: bool, nc: bool, np: bool, ng: bool, nx: bool) -> PngResult<()> {
+    let mut _nb = nb;
+    let mut _nc = nc;
+    let mut _np = np;
+    let mut _ng = ng;
+
+    if nx {
+        _nb = true;
+        _nc = true;
+        _np = true;
+        _ng = true;
+    }
+
+    let mut opt = oxipng::Options {
         fix_errors: true,
+        bit_depth_reduction: !_nb,
+        color_type_reduction: !_nc,
+        palette_reduction: !_np,
+        grayscale_reduction: !_ng,
         ..Default::default()
     };
+
+    if nx {
+        opt.interlace = None;
+    }
 
     let file_path = Path::new(path);
     oxipng::optimize(
