@@ -318,9 +318,9 @@ dependencies = [
 
 [[package]]
 name = "fltk-theme"
-version = "0.7.2"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3539d27a815514b56af2afa6b8e7c6d6b9274a103239487d5a60daa6340a4868"
+checksum = "03302d43154c9c51b4297a96f40c85ea913bb15ea27b6a38665284ddae8ac3d7"
 dependencies = [
  "fltk",
 ]
