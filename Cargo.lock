@@ -270,18 +270,18 @@ dependencies = [
 
 [[package]]
 name = "fl2rust"
-version = "0.5.19"
+version = "0.5.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6679204ae2e70ee854f3caea0085fd15bf413baf81aba85422ea3394b00595f"
+checksum = "5419f42ba6efde00c314f61018046c3fc934cb43059d6757ce4a469d5cc350a5"
 dependencies = [
  "fluid-parser",
 ]
 
 [[package]]
 name = "fl2rust-macro"
-version = "0.5.19"
+version = "0.5.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c9d2926dce1ad7d3dc947fe6151aaa07b917f2b75e83cb86bd5306f4e434878c"
+checksum = "17d9bc02fcbdc98135c5b6474ef8a3216e17de1d81629164a4256c7c6a1d03dc"
 dependencies = [
  "fl2rust",
  "fluid-parser",
