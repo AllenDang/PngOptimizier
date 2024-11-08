@@ -24,7 +24,7 @@ codegen-units = 1
 fltk = "1"
 fl2rust-macro = "0.5"
 fltk-theme = "0.7"
-tokio = { version = "1.40.0", features = ["full"] }
+tokio = { version = "1.41.1", features = ["full"] }
 oxipng = { version = "9", features = [
   "parallel",
   "zopfli",
