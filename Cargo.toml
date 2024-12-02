@@ -33,4 +33,4 @@ oxipng = { version = "9", features = [
 float-pretty-print = "0.1.1"
 
 [build-dependencies]
-embed-resource = "2.5"
+embed-resource = "3.0"
