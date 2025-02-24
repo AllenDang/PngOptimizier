@@ -22,7 +22,7 @@ codegen-units = 1
 
 [dependencies]
 fltk = "1"
-fl2rust-macro = "0.5"
+fl2rust-macro = "0.7"
 fltk-theme = "0.7"
 tokio = { version = "1.40.0", features = ["full"] }
 oxipng = { version = "9", features = [
