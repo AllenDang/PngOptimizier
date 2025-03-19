@@ -13,16 +13,21 @@ copyright = "Copyright (c) Allen Dang 2022. All rights reserved."
 category = "Developer Tool"
 short_description = "PNG Optimizer"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [profile.release]
-strip = true
-lto = true
-opt-level = 3
+strip = "symbols"
+lto = "fat"
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
+
+[profile.release.package."*"]
+strip = "symbols"
+opt-level = "z"
 codegen-units = 1
 
 [dependencies]
 fltk = "1"
-fl2rust-macro = "0.5"
+fl2rust-macro = "0.6"
 fltk-theme = "0.7"
 tokio = { version = "1.40.0", features = ["full"] }
 oxipng = { version = "9", features = [

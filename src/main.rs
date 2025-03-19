@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::path::Path;
+use std::fs;
 
 use float_pretty_print::PrettyPrintFloat;
 use fltk::{enums::Event, image::PngImage, prelude::*, *};
@@ -69,16 +70,20 @@ async fn main() {
             Event::Paste => {
                 if dnd && released {
                     let path = app::event_text();
-                    let pathes = path.split('\n');
-
+                    
                     drop_in_pathes.clear();
-
-                    // Only accepts png file
-                    for p in pathes {
-                        if p.ends_with(".png") {
-                            drop_in_pathes.push(p.to_string());
-                        }
-                    }
+                    
+                    // Process files and directories using iterators
+                    path.split('\n')
+                        .filter(|p| !p.trim().is_empty())
+                        .for_each(|p| {
+                            let path = Path::new(p);
+                            if path.is_file() && p.ends_with(".png") {
+                                drop_in_pathes.push(p.to_string());
+                            } else if path.is_dir() {
+                                drop_in_pathes.extend(find_png_files(path));
+                            }
+                        });
 
                     let nb = ui.cb_nb.value();
                     let nc = ui.cb_nc.value();
@@ -296,4 +301,28 @@ fn optimize_png(path: &str, nb: bool, nc: bool, np: bool, ng: bool, nx: bool) ->
         },
         &opt,
     )
+}
+
+// Recursively find PNG files in a directory
+fn find_png_files(dir: &Path) -> Vec<String> {
+    fs::read_dir(dir)
+        .map(|entries| {
+            entries
+                .filter_map(Result::ok)
+                .flat_map(|entry| {
+                    let path = entry.path();
+                    if path.is_dir() {
+                        find_png_files(&path)
+                    } else {
+                        // Check if it's a PNG file and convert to String if it is
+                        path.extension()
+                            .filter(|ext| ext.to_string_lossy().eq_ignore_ascii_case("png"))
+                            .and_then(|_| path.to_str())
+                            .map(|s| vec![s.to_string()])
+                            .unwrap_or_default()
+                    }
+                })
+                .collect()
+        })
+        .unwrap_or_default()
 }
