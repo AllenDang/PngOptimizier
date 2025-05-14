@@ -36,6 +36,7 @@ oxipng = { version = "9", features = [
   "filetime",
 ], default-features = false }
 float-pretty-print = "0.1.1"
+rayon = "1.10.0"
 
 [build-dependencies]
 embed-resource = "3.0"

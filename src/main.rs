@@ -1,12 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::path::Path;
 use std::fs;
+use std::path::Path;
 
 use float_pretty_print::PrettyPrintFloat;
 use fltk::{enums::Event, image::PngImage, prelude::*, *};
 use fltk_theme::{color_themes, ColorTheme, SchemeType, WidgetScheme};
 use oxipng::{InFile, OutFile, PngResult};
+use rayon::prelude::*;
 
 mod mainview {
     fl2rust_macro::include_ui!("gui/mainview.fl");
@@ -70,9 +71,9 @@ async fn main() {
             Event::Paste => {
                 if dnd && released {
                     let path = app::event_text();
-                    
+
                     drop_in_pathes.clear();
-                    
+
                     // Process files and directories using iterators
                     path.split('\n')
                         .filter(|p| !p.trim().is_empty())
@@ -139,7 +140,9 @@ async fn main() {
                     let sender = s.clone();
                     tokio::spawn(async move {
                         let total = pathes.len();
-                        for (i, p) in pathes.iter().enumerate() {
+
+                        (0..total).into_par_iter().for_each(|i| {
+                            let p = &pathes[i];
                             let mut item = PNGItem {
                                 index: i as i32,
                                 filepath: p.clone(),
@@ -154,22 +157,24 @@ async fn main() {
                                     item.orignal_size = size;
                                 }
                                 Err(_) => {
+                                    // Just report error and skip this file, other files will still be processed
                                     sender.send(Message::Error(item));
-                                    continue;
+                                    return;
                                 }
                             }
 
                             sender.send(Message::Processing(item.clone()));
 
                             if optimize_png(p, nb, nc, np, ng, nx).is_err() {
+                                // Just report error and skip this file, other files will still be processed
                                 sender.send(Message::Error(item));
-                                continue;
+                                return;
                             }
 
                             item.optimized_size = get_file_size(p).unwrap();
 
                             sender.send(Message::Done(item));
-                        }
+                        });
 
                         sender.send(Message::AllDone);
                     });
