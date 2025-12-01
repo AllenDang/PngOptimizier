@@ -176,12 +176,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "float-pretty-print"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cae1cdc50a756244008a19d313827537e5e18d55f76779e8d5f9aa00769ca231"
-
-[[package]]
 name = "fltk"
 version = "1.5.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -378,7 +372,6 @@ version = "1.2.1"
 dependencies = [
  "embed-resource",
  "fl2rust-macro",
- "float-pretty-print",
  "fltk",
  "fltk-theme",
  "oxipng",

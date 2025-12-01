@@ -3,7 +3,6 @@
 use std::fs;
 use std::path::Path;
 
-use float_pretty_print::PrettyPrintFloat;
 use fltk::{enums::Event, image::PngImage, prelude::*, *};
 use fltk_theme::{color_themes, ColorTheme, SchemeType, WidgetScheme};
 use oxipng::{InFile, OutFile, PngResult};
@@ -224,7 +223,7 @@ fn format_file_size(size: usize) -> String {
         sizer = "GB";
     }
 
-    format!("{:.2} {}", PrettyPrintFloat(result.into()), sizer)
+    format!("{:.1} {}", result, sizer)
 }
 
 fn format_png_item(item: &PNGItem, state: &str, optimize_percent: f32) -> String {
