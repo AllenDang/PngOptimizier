@@ -52,8 +52,6 @@ async fn main() {
     ui.b_list.set_column_char('|');
     ui.b_list.add("File|State|Original|Optimized|Percent");
     ui.b_list.handle({
-        let sender = s.clone();
-
         let mut dnd = false;
         let mut released = false;
         let mut drop_in_pathes = Vec::<String>::new();
@@ -92,7 +90,7 @@ async fn main() {
                     let ng = ui.cb_np.value();
                     let nx = ui.cb_nx.value();
 
-                    sender.send(Message::Start(drop_in_pathes.clone(), nb, nc, np, ng, nx));
+                    s.send(Message::Start(drop_in_pathes.clone(), nb, nc, np, ng, nx));
 
                     dnd = false;
                     released = false;
@@ -137,7 +135,6 @@ async fn main() {
                         ));
                     }
 
-                    let sender = s.clone();
                     tokio::spawn(async move {
                         let total = pathes.len();
 
@@ -150,7 +147,7 @@ async fn main() {
                                 optimized_size: 0,
                             };
 
-                            sender.send(Message::UpdateProgress(i as i32 + 1, total as i32));
+                            s.send(Message::UpdateProgress(i as i32 + 1, total as i32));
 
                             match get_file_size(p) {
                                 Ok(size) => {
@@ -158,25 +155,25 @@ async fn main() {
                                 }
                                 Err(_) => {
                                     // Just report error and skip this file, other files will still be processed
-                                    sender.send(Message::Error(item));
+                                    s.send(Message::Error(item));
                                     return;
                                 }
                             }
 
-                            sender.send(Message::Processing(item.clone()));
+                            s.send(Message::Processing(item.clone()));
 
                             if optimize_png(p, nb, nc, np, ng, nx).is_err() {
                                 // Just report error and skip this file, other files will still be processed
-                                sender.send(Message::Error(item));
+                                s.send(Message::Error(item));
                                 return;
                             }
 
                             item.optimized_size = get_file_size(p).unwrap();
 
-                            sender.send(Message::Done(item));
+                            s.send(Message::Done(item));
                         });
 
-                        sender.send(Message::AllDone);
+                        s.send(Message::AllDone);
                     });
                 }
                 Message::Processing(item) => {
@@ -239,9 +236,9 @@ fn format_png_item(item: &PNGItem, state: &str, optimize_percent: f32) -> String
         .unwrap()
         .to_string();
 
-    if short_path.len() > 40 {
-        short_path.truncate(40);
-        short_path += "...";
+    // Truncate by character count, not byte count, to avoid splitting multi-byte UTF-8 characters
+    if short_path.chars().count() > 40 {
+        short_path = short_path.chars().take(40).collect::<String>() + "...";
     }
 
     format!(
