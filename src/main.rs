@@ -302,6 +302,7 @@ fn optimize_png(path: &str, nb: bool, nc: bool, np: bool, ng: bool, nx: bool) ->
         },
         &opt,
     )
+    .map(|_| ())
 }
 
 // Recursively find PNG files in a directory
