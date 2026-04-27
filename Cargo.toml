@@ -35,7 +35,7 @@ oxipng = { version = "10", features = [
   "zopfli",
   "filetime",
 ], default-features = false }
-rayon = "1.11.0"
+rayon = "1.12.0"
 
 [build-dependencies]
 embed-resource = "3.0"
